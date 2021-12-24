@@ -2,9 +2,8 @@ package com.udacity.jdnd.course3.critter;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
-import com.udacity.jdnd.course3.critter.pet.PetController;
-import com.udacity.jdnd.course3.critter.pet.PetDTO;
-import com.udacity.jdnd.course3.critter.pet.PetType;
+import com.udacity.jdnd.course3.critter.pet.*;
+import com.udacity.jdnd.course3.critter.user.*;
 import com.udacity.jdnd.course3.critter.schedule.ScheduleController;
 import com.udacity.jdnd.course3.critter.schedule.ScheduleDTO;
 import com.udacity.jdnd.course3.critter.user.*;
@@ -92,17 +91,23 @@ public class CritterFunctionalTest {
         CustomerDTO customerDTO = createCustomerDTO();
         CustomerDTO newCustomer = userController.saveCustomer(customerDTO);
 
-        PetDTO petDTO = createPetDTO();
-        petDTO.setOwnerId(newCustomer.getId());
-        PetDTO newPet = petController.savePet(petDTO);
-        petDTO.setType(PetType.DOG);
-        petDTO.setName("DogName");
-        PetDTO newPet2 = petController.savePet(petDTO);
+        PetDTO petDTO1 = createPetDTO();
+        petDTO1.setOwnerId(newCustomer.getId());
+        petDTO1.setType(PetType.DOG);
+        petDTO1.setName("DogName");
+        petController.savePet(petDTO1);
+
+        PetDTO petDTO2 = createPetDTO();
+        petDTO2.setOwnerId(newCustomer.getId());
+        petDTO2.setType(PetType.CAT);
+        petDTO2.setName("CatName");
+        petController.savePet(petDTO2);
+
 
         List<PetDTO> pets = petController.getPetsByOwner(newCustomer.getId());
         Assertions.assertEquals(pets.size(), 2);
         Assertions.assertEquals(pets.get(0).getOwnerId(), newCustomer.getId());
-        Assertions.assertEquals(pets.get(0).getId(), newPet.getId());
+        Assertions.assertEquals(pets.get(0).getId(), petDTO1.getId());
     }
 
     @Test
